@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Airplane game</title>
+    <style type="text/css">
+      #ocean {
+        /* background-image: url("ocean.jpg"); */
+        background-image: url("/ocean.jpg");
+        width: 900px;
+        height: 700px;
+      }
+      .player {
+        position: absolute;
+        background-image: url("player.png");
+        width: 70px;
+        height: 75px;
+      }
+      .enemy {
+        position: absolute;
+        background-image: url("enemy.png");
+        width: 70px;
+        height: 75px;
+      }
+      .missle {
+        width: 5px;
+        height: 5px;
+        position: absolute;
+        background-color: blue;
+        border-radius: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ocean">
+      <div id="players"></div>
+      <div id="enemies"></div>
+      <div id="missles"></div>
+    </div>
+    <script type="text/javascript">
+      var player = {
+        left: 450,
+        top: 620,
+      };
+      var enemies = [
+        { left: 200, top: 100 },
+        { left: 270, top: 100 },
+        { left: 340, top: 100 },
+        { left: 410, top: 100 },
+      ];
+      var missles = [];
+      var missileInterval = null;
+      function drawPlayer() {
+        content =
+          '<div class="player" style="left:' +
+          player.left +
+          "px; top:" +
+          player.top +
+          'px"></div>';
+        document.getElementById("players").innerHTML = content;
+      }
+      function drawMissles() {
+        content = "";
+        for (var idx = 0; idx < missles.length; idx++) {
+          missles[idx].top -= 50;
+          content +=
+            '   <div class="missle" style="left: ' +
+            missles[idx].left +
+            "px; top:" +
+            missles[idx].top +
+            'px;"></div>';
+        }
+
+        document.getElementById("missles").innerHTML = content;
+      }
+
+      function drawEnemy() {
+        content = "";
+        for (var idx = 0; idx < enemies.length; idx++) {
+          content +=
+            ' <div class="enemy" style="left:' +
+            enemies[idx].left +
+            "px; top:" +
+            enemies[idx].top +
+            'px" ></div>';
+        }
+
+        document.getElementById("enemies").innerHTML = content;
+      }
+
+      var direction = 1;
+
+      function moveEnemy() {
+        for (var idx = 0; idx < enemies.length; idx++) {
+          enemies[idx].left += 5 * direction;
+
+          if (
+            enemies[idx].left >= window.innerWidth - 900 ||
+            enemies[idx].left <= 0
+          ) {
+            direction *= -1;
+          }
+        }
+        drawEnemy();
+      }
+      setInterval(moveEnemy, 100);
+      document.onkeydown = function (e) {
+        console.log(e.keyCode);
+        console.log("top value", player.top);
+        console.log("left value", player.left);
+        if (e.keyCode == 37 && player.left > 10) {
+          //left
+          player.left = player.left - 10;
+        } else if (e.keyCode == 38 && player.top != 300) {
+          //up
+          player.top = player.top - 10;
+        } else if (e.keyCode == 39 && player.left < 825) {
+          //right
+          player.left = player.left + 10;
+        } else if (e.keyCode == 40 && player.top != 630) {
+          player.top = player.top + 10;
+        } else if (e.keyCode == 32) {
+          missles.push({ left: player.left + 34, top: player.top - 8 });
+          if (!missileInterval) {
+            missileInterval = setInterval(function () {
+              drawMissles();
+            }, 100);
+          }
+        }
+        drawPlayer();
+      };
+      function gameLoop() {
+        drawPlayer();
+        // moveEnemy();
+        drawEnemy();
+        drawMissles();
+        setTimeout(gameLoop(), 10);
+      }
+      gameLoop();
+    </script>
+  </body>
+</html>
+<!-- NOTES -->
+<!-- (basic) Add feature: Move player up and down. ((DONE))
+(basic) Add more enemies (add 4 more on the ocean).
+(advanced) Modify feature: Limit player's up/down range to about 1/3rd of the bottom of the screen. -->
