@@ -118,7 +118,8 @@
           player.left = player.left + 10;
         } else if (e.keyCode == 40 && player.top != 630) {
           player.top = player.top + 10;
-        } else if (e.keyCode == 32) {
+        }
+        if (e.keyCode == 32) {
           missles.push({ left: player.left + 34, top: player.top - 8 });
           if (!missileInterval) {
             missileInterval = setInterval(function () {
