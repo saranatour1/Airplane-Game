@@ -107,9 +107,6 @@
       }
       setInterval(moveEnemy, 100);
       document.onkeydown = function (e) {
-        console.log(e.keyCode);
-        console.log("top value", player.top);
-        console.log("left value", player.left);
         if (e.keyCode == 37 && player.left > 10) {
           //left
           player.left = player.left - 10;
@@ -142,7 +139,3 @@
     </script>
   </body>
 </html>
-<!-- NOTES -->
-<!-- (basic) Add feature: Move player up and down. ((DONE))
-(basic) Add more enemies (add 4 more on the ocean).
-(advanced) Modify feature: Limit player's up/down range to about 1/3rd of the bottom of the screen. -->
